@@ -8,9 +8,9 @@ import "./interfaces/Comptroller.sol";
 contract PooledCDAI is ERC20, Ownable {
   uint256 internal constant PRECISION = 10 ** 18;
 
-  address public constant COMPTROLLER_ADDRESS = 0x3d9819210A31b4961b30EF54bE2aeD79B9c9Cd3B;
-  address public constant CDAI_ADDRESS = 0xF5DCe57282A584D2746FaF1593d3121Fcac444dC;
-  address public constant DAI_ADDRESS = 0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359;
+  address public COMPTROLLER_ADDRESS;
+  address public CDAI_ADDRESS;
+  address public DAI_ADDRESS;
 
   string private _name;
   string private _symbol;
@@ -21,6 +21,13 @@ contract PooledCDAI is ERC20, Ownable {
   event Burn(address indexed sender, address indexed to, uint256 amount);
   event WithdrawInterest(address indexed sender, address beneficiary, uint256 amount, bool indexed inDAI);
   event SetBeneficiary(address oldBeneficiary, address newBeneficiary);
+
+  constructor (address _comptroller, address _cdai, address _dai) public {
+    require(_comptroller != address(0) && _cdai != address(0) && _dai != address(0), "invalid address");
+    COMPTROLLER_ADDRESS = _comptroller;
+    CDAI_ADDRESS = _cdai;
+    DAI_ADDRESS = _dai;
+  }
 
   /**
     * @dev Sets the values for `name` and `symbol`. Both of
